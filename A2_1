@@ -1,0 +1,62 @@
+Daily Activity – 04/07/24
+Month	Category A	Category B	Category C
+January	500	700	600
+February	600	800	700
+March	700	500	600
+April	500	600	800
+May	800	400	300
+June	800	400	300
+July	500	700	600
+Aug	700	500	600
+Sep	500	600	800
+Oct	800	400	300
+Nov	500	700	600
+Dec	600	800	700
+
+Vertical Bar Chart: Compares sales figures for each product category across different months. Each product category has its own set of bars, with different colors representing different months.
+
+Horizontal Bar Chart: Similar to the vertical bar chart, but with categories listed along the y-axis and sales figures along the x-axis. This orientation can be useful for displaying longer category names.
+
+Grouped Bar Chart: Compares sales figures for each product category across different months side by side. Each pair of bars represents sales for a specific category in January and February.
+
+Stacked Bar Chart: Shows the total sales for each month, with each bar divided into segments representing different product categories. This allows viewers to see the contribution of each category to the total sales for each month.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Install necessary packages if you haven't already
+# install.packages("tidyverse")
+
+library(tidyverse)
+# Create a data frame
+sales_data <- tibble(
+  Month = c("January", "February", "March", "April", "May", "June", 
+            "July", "August", "September", "October", "November", "December"),
+  Category_A = c(500, 600, 700, 500, 800, 800, 500, 700, 500, 800, 500, 600),
+  Category_B = c(700, 800, 500, 600, 400, 400, 700, 500, 600, 400, 700, 800),
+  Category_C = c(600, 700, 600, 800, 300, 300, 600, 600, 800, 300, 600, 700)
+)
+# Reshape the data to long format
+sales_long <- sales_data %>%
+  pivot_longer(cols = starts_with("Category"), 
+               names_to = "Category", 
+               values_to = "Sales")
+# Vertical Bar Chart
+ggplot(sales_long, aes(x = Month, y = Sales, fill = Category)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Vertical Bar Chart: Sales by Category and Month",
+       x = "Month",
+       y = "Sales") +
+  theme_minimal()
+# Horizontal Bar Chart
+ggplot(sales_long, aes(x = Sales, y = Month, fill = Category)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Horizontal Bar Chart: Sales by Category and Month",
+       x = "Sales",
+       y = "Month") +
+  theme_minimal()
+# Stacked Bar Chart
+ggplot(sales_long, aes(x = Month, y = Sales, fill = Category)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Stacked Bar Chart: Total Sales by Month",
+       x = "Month",
+       y = "Sales") +
+  theme_minimal()
